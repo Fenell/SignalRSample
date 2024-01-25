@@ -1,24 +1,32 @@
-﻿//Create connection
-var connection = new signalR.HubConnectionBuilder().withUrl("/hubs/userCount").build();
+﻿var countCloak = document.getElementById("cloakCounter");
+var countStone = document.getElementById("stoneCounter");
+var countWand = document.getElementById("wandCounter");
+//Create connection
+var connectionDeathlyHallows = new signalR.HubConnectionBuilder().withUrl("/hubs/deathlyhallows").build();
 
 //Connect to methods that hub invokes aka receive notification from hub
- connection.on("updateTotalViews", (value)=>{
-     var newCountSpan = document.getElementById("totalViewsCounter");
-     newCountSpan.innerText = value.toString();
- });
+connectionDeathlyHallows.on("updateDeadthlyHallows", (cloak, stone, wand) => {
+    countCloak.innerText = cloak.toString();
+    countStone.innerText  = stone.toString();
+    countWand.innerText = wand.toString();
+});
 
 //invoke hub methods aka send notification to hub
 //Send thì server không trả về Response -- invoke thì có
-function newWindowLoadedOnClient(){
-     connection.invoke("NewWindowLoaded", "Fenell").then(value => console.log(value));
-}
+
 
 // start connection
-function successful(){
-     console.log("Connect to User hub successful");
-     newWindowLoadedOnClient();
+function successful() {
+    console.log("Connect to User hub successful");
+    connectionDeathlyHallows.invoke("GetDeathlyHallows").then(value => {
+        countCloak.innerText = value.cloak.toString();
+        countStone.innerText  = value.stone.toString();
+        countWand.innerText = value.wand.toString();
+    });
 }
-function rejected(){
-     
+
+function rejected() {
+
 }
-connection.start().then(successful, rejected);
+
+connectionDeathlyHallows.start().then(successful, rejected);

@@ -1,6 +1,6 @@
 ﻿namespace BlazorSignalR.Service.Models;
 
-public class Counter
+public static class Counter
 {
-    
+    public static int UserCount { get; set; } = 0;
 }

@@ -1,6 +1,14 @@
-﻿namespace BlazorSignalR.Service.Hubs;
+﻿using Microsoft.AspNetCore.SignalR;
 
-public class UserHub
+namespace BlazorSignalR.Service.Hubs;
+
+public class UserHub:Hub
 {
-    
+    public static int UserCounter { get; set; } = 0;
+
+    public async Task NewLoadedWindow()
+    {
+	    UserCounter++;
+	    await Clients.All.SendAsync("newWindowLoaded", UserCounter);
+    }
 }

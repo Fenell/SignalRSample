@@ -1,4 +1,5 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.SignalR.Client
 
 <PageTitle>Index</PageTitle>
 
@@ -6,4 +7,39 @@
 
 Welcome to your new app.
 
-<SurveyPrompt Title="How is Blazor working for you?"/>
+<SurveyPrompt Title="How is Blazor working for you?" />
+
+<div class="container">
+	<div class="row">
+		<div class="col-3">Total Views:</div>
+		<div class="col-4">
+			<span id="totalViewsCounter">@UserCount</span>
+		</div>
+	</div>
+</div>
+
+@code
+{
+	private HubConnection _hubConnection;
+	public int UserCount { get; set; } = 0;
+	[Inject]
+	public HttpClient HttpClient { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		string url = "https://localhost:7163/hubs/userCount";
+		_hubConnection = new HubConnectionBuilder().WithUrl(url).Build();
+		await _hubConnection.StartAsync();
+		await LoadWindow();
+		_hubConnection.On<int>("newWindowLoaded", (value) =>
+		{
+			UserCount = value;
+			StateHasChanged();
+		});
+	}
+
+	private async Task LoadWindow()
+	{
+		await _hubConnection.SendAsync("NewLoadedWindow");
+	}
+}

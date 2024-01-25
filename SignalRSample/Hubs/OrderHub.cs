@@ -1,6 +1,8 @@
-﻿namespace SignalRSample.Hubs;
+﻿using Microsoft.AspNetCore.SignalR;
 
-public class OrderHub
+namespace SignalRSample.Hubs;
+
+public class OrderHub : Hub
 {
     
 }
