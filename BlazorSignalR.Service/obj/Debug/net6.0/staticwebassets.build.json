@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "e3S1GH8YSR3o9mATyZo5gktQcONgZ2j+Fu9RCFxTSco=",
+  "Source": "BlazorSignalR.Service",
+  "BasePath": "_content/BlazorSignalR.Service",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
